@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  driver-service:
+    build:
+      context: ../ # Place to fetch driver-service Pom.xml
+      dockerfile: ./driver-service/Dockerfile
+    container_name: driver-service-app
+    depends_on:
+      redis-cache:
+        condition: service_healthy # Wait for the redis to be ready before starting Java
+    environment:
+      - SERVER_PORT=8081
+      - SPRING_DATA_REDIS_HOST=redis-cache
+      - SPRING_DATA_REDIS_PORT=6379
+    ports:
+      - "8081:8081"
+
+networks:
+  rideshare-system-network:
+    external: true

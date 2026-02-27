@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+ # Building the Ride Service building
+  rider-service:
+    build:
+      context: ../ # Place to fetch rider-service Pom.xml
+      dockerfile: ./rider-service/Dockerfile
+    container_name: rider-service-app
+    depends_on:
+      postgres-db:
+        condition: service_healthy # Wait for the DB to be ready before starting Java
+    environment:
+      # These match the ${VARIABLE} names you wrote in application.properties
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/ride_db
+      - SPRING_DATASOURCE_USERNAME=kiran
+      - SPRING_DATASOURCE_PASSWORD=pass
+    ports:
+      - "8080:8080"
+
+networks:
+  rideshare-system-network:
+    external: true
