@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.kiran.ridesharing</groupId>
-    <artifactId>ride-sharing-parent</artifactId>
+    <groupId>com.kiran.ridesharesystem</groupId>
+    <artifactId>rideshare-system-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging> <parent>
         <groupId>org.springframework.boot</groupId>
@@ -15,7 +15,8 @@
     </parent>
 
     <modules>
-        <module>ride-service</module>
+        <module>rider-service</module>
+        <module>driver-service</module>
         </modules>
 
     <properties>
