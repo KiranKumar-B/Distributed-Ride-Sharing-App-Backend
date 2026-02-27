@@ -1,0 +1,7 @@
+target/
+*.jar
+*.war
+*.ear
+.idea/
+.vscode/
+.history/
