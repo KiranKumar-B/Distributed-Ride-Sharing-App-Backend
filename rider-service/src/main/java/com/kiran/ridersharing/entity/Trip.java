@@ -2,6 +2,8 @@ package com.kiran.ridersharing.entity;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.Version;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -38,4 +40,7 @@ public class Trip {
         this.createdAt = LocalDateTime.now();
         this.status = TripStatus.REQUESTED;
     }
+
+    @Version
+    private Integer version; // Added for Optimistic Locking
 }

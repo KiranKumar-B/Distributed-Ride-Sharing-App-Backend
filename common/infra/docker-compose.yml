@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Building the Database building
   postgres-db:

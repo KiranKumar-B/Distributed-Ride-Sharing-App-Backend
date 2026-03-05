@@ -1,8 +1,12 @@
 package com.kiran.driversharing.service;
 
 import org.springframework.data.geo.Point;
+import org.springframework.data.redis.core.GeoOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import reactor.core.publisher.Mono;
+
 import org.springframework.data.geo.Circle;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResults;
@@ -45,5 +49,11 @@ public class DriverLocationService {
 
         // 3. Execute GEORADIUS/GEOSEARCH
         return redisTemplate.opsForGeo().radius(DRIVER_GEO_KEY, area, args);
+    }
+
+    public Double checkDriverPresence(String driverId) {
+        // We check if the driver has a score in the Geospatial Sorted Set
+        // If they exist, score is returned; if not, it's empty/null
+        return redisTemplate.opsForZSet().score(DRIVER_GEO_KEY, driverId);
     }
 }

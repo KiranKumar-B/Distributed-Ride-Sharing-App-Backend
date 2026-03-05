@@ -19,4 +19,11 @@ public class TripController {
         // This will save the trip to PostgreSQL and return the saved entity with its ID
         return tripService.requestRide(tripRequest);
     }
+
+    @PatchMapping("/{tripId}/accept")
+    public Trip acceptTrip(
+            @PathVariable Long tripId,
+            @RequestParam String driverId) {
+        return tripService.acceptTrip(tripId, driverId);
+    }
 }

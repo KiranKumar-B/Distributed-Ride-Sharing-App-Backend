@@ -1,5 +1,3 @@
-version: '3.8'
-
 include:
   - path: ./common/infra/docker-compose.yml
   - path: ./rider-service/docker-compose.yml
