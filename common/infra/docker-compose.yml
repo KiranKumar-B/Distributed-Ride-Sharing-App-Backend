@@ -4,22 +4,22 @@ services:
   # Building the Database building
   postgres-db:
     image: postgres:15-alpine
-    container_name: ride-db-container
+    container_name: rideshare-db-container
     environment:
       - POSTGRES_USER=kiran
       - POSTGRES_PASSWORD=pass
-      - POSTGRES_DB=ride_db
+      - POSTGRES_DB=rideshare_db
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U kiran -d ride_db"]
+      test: ["CMD-SHELL", "pg_isready -U kiran -d rideshare_db"]
       interval: 10s
       timeout: 5s
       retries: 5
   
   redis-cache:
     image: redis:7-alpine
-    container_name: ride-redis-container
+    container_name: rideshare-redis-container
     ports:
       - "6379:6379"
     healthcheck:

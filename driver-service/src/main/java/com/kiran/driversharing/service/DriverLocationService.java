@@ -30,7 +30,6 @@ public class DriverLocationService {
         redisTemplate.opsForGeo().add(DRIVER_GEO_KEY, point, driverId);
     }
 
-    // Add this method inside your Service class
     public GeoResults<RedisGeoCommands.GeoLocation<Object>> getNearbyDrivers(double lat, double lng, double radiusInKm) {
         // 1. Define the search area (Point + Radius)
         Point center = new Point(lng, lat);
