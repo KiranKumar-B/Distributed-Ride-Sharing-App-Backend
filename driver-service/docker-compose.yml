@@ -7,13 +7,13 @@ services:
     depends_on:
       redis-cache:
         condition: service_healthy # Wait for the redis to be ready before starting Java
+      kafka:
+        condition: service_healthy
     environment:
       - SERVER_PORT=8081
       - SPRING_DATA_REDIS_HOST=redis-cache
       - SPRING_DATA_REDIS_PORT=6379
     ports:
       - "8081:8081"
-
-networks:
-  rideshare-system-network:
-    external: true
+    networks:
+      - rideshare-system-network

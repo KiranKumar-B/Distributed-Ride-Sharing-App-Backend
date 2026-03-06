@@ -2,6 +2,8 @@ package com.kiran.ridersharing.controller;
 
 import com.kiran.ridersharing.entity.Trip;
 import com.kiran.ridersharing.service.TripService;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,5 +27,11 @@ public class TripController {
             @PathVariable Long tripId,
             @RequestParam String driverId) {
         return tripService.acceptTrip(tripId, driverId);
+    }
+
+    @PatchMapping("/{tripId}/complete")
+    public ResponseEntity<Trip> completeTrip(@PathVariable Long tripId) {
+        Trip completedTrip = tripService.completeTrip(tripId);
+        return ResponseEntity.ok(completedTrip);
     }
 }
