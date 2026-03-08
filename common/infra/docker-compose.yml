@@ -1,7 +1,7 @@
 services:
   # Building the Database building
   postgres-db:
-    image: postgres:15-alpine
+    image: postgis/postgis:15-3.3-alpine # Supports spatial types
     container_name: rideshare-db-container
     environment:
       - POSTGRES_USER=kiran

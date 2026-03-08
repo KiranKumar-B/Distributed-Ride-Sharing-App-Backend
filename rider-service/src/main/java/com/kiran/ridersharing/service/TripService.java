@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @Slf4j
 @Service
@@ -129,5 +130,23 @@ public class TripService {
         }
 
         return savedTrip;
+    }
+
+    @CircuitBreaker(name = "driverService", fallbackMethod = "verifyDriverFallback")
+    public void verifyDriverPresence(String driverId) {
+        log.info("Verifying presence for Driver: {}", driverId);
+        
+        // If driver-service is down or slow, this will trigger the fallback
+        webClient.get()
+                .uri("/api/v1/driver/verify/" + driverId)
+                .retrieve()
+                .bodyToMono(Boolean.class)
+                .block(); 
+    }
+
+    // The Fallback method to prevent the 60-second hang
+    public void verifyDriverFallback(String driverId, Throwable t) {
+        log.error("CIRCUIT BREAKER OPEN: Driver service is failing. Providing graceful failure.");
+        throw new RuntimeException("Driver verification service is currently unavailable. Please try again in 10 seconds.");
     }
 }

@@ -79,7 +79,7 @@ public class DriverLocationService {
     public void setDriverAvailable(String driverId) {
         // Remove the "Busy" flag
         redisTemplate.delete(BUSY_KEY_PREFIX + driverId);
-        log.info("Key deleted: {}{}. Driver is now free for GPS pings.", BUSY_PREFIX, driverId);
+        log.info("Key deleted: {}{}. Driver is now free for GPS pings.", BUSY_KEY_PREFIX, driverId);
     }
 
     public boolean isDriverBusy(String driverId) {

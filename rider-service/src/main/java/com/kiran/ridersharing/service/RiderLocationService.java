@@ -6,13 +6,18 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.core.ParameterizedTypeReference;
 
 import com.kiran.ridersharing.dto.NearbyDriverDTO;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
+@EnableCaching
 @Service
+@Slf4j
 public class RiderLocationService {
 
     private final WebClient webClient;
@@ -22,6 +27,7 @@ public class RiderLocationService {
         this.webClient = webClientBuilder.baseUrl("http://driver-service:8081").build();
     }
 
+    @CircuitBreaker(name = "driverService", fallbackMethod = "verifyDriverFallback")
     public Flux<NearbyDriverDTO> getNearbyDrivers(double lat, double lng, double radius) {
     return this.webClient.get()
             .uri(uriBuilder -> uriBuilder
@@ -51,5 +57,11 @@ public class RiderLocationService {
                 dto.setDistance((Double) distance.get("value"));
                 return dto;
             });
+    }
+
+    public Flux<NearbyDriverDTO> verifyDriverFallback(Double lat, Double lng, Exception e, Throwable t) {
+        log.error("Resilience4j Fallback Triggered. Reason: {}", t.getMessage());
+        // Return an empty list or cached results so the UI doesn't crash
+        return Flux.empty();
     }
 }
