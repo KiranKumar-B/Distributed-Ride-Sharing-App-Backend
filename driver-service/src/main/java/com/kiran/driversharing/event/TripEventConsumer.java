@@ -28,7 +28,8 @@ public class TripEventConsumer {
                 // Logic: Remove driver from available pool in Redis
                 driverLocationService.setDriverBusy(event.driverId());
                 log.info("🚫 Driver {} marked as BUSY", event.driverId());
-                throw new RuntimeException("Simulated Redis Lock Failure for Saga Test");
+                //  Uncomment below to check the Saga pattern; to nullify the accepted ride -> cancelled, due to Redis failure!
+                // throw new RuntimeException("Simulated Redis Lock Failure for Saga Test");
             } else if ("COMPLETED".equals(event.status())) {
             // 2. Clear "Busy" status so the next GPS Ping is accepted
                 // This ensures the driver's phone can successfully re-register as 'Available'

@@ -37,7 +37,10 @@ public class TripService {
         Trip savedTrip = tripRepository.save(tripRequest);
         log.info("Trip {} created for Rider {}", savedTrip.getId(), savedTrip.getRiderId());
 
-        // 2. Find nearby drivers asynchronously using our existing logic
+        // 2. DISPATCH EVENT (This fills the 'UNKNOWN' gap)
+    kafkaTemplate.send("trip-events", new TripEvent(savedTrip.getId(), null, "REQUESTED"));
+
+        // 3. Find nearby drivers asynchronously using our existing logic
         riderLocationService.getNearbyDrivers(
             savedTrip.getPickupLat(), 
             savedTrip.getPickupLng(), 
